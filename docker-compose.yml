@@ -1,6 +1,5 @@
-version: '3.8'
 services:
-  backend:
+  client-portal-backend:
     build: .
     ports:
       - "4000:4000"
@@ -11,9 +10,9 @@ services:
       - NODE_ENV=development
       - DATABASE_URL=postgresql://user:pass@db:5432/client_portal
     depends_on:
-      - db
+      - client-portal-db
 
-  db:
+  client-portal-db:
     image: postgres:15
     restart: always
     environment:
