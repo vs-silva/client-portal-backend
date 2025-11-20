@@ -1,6 +1,7 @@
 {
   "name": "client-portal-backend",
   "version": "1.0.0",
+  "type": "module",
   "description": "Backend service for Client Portal for Freelancers & Agencies",
   "main": "dist/index.js",
   "scripts": {
