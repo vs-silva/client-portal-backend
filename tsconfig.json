@@ -8,7 +8,10 @@
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "allowJs": true,
+    "types": ["node"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
