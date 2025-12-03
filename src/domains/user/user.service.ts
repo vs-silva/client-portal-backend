@@ -10,7 +10,6 @@ export function UserService(reader: UserServiceReaderDrivenPorts, writer: UserSe
     }
 
     async function registerUser(user: UserDTO): Promise<UserDTO | null> {
-
         const existentUser = await findUserByEmail(user.email);
 
         if (!existentUser) {

@@ -1,27 +1,51 @@
-
+import {describe, expect, test, vi} from "vitest";
 import type { UserDTO } from "../core/dtos/user.dto.ts";
-import { USER_ROLES } from "../core/constants/user-roles.constant.ts";
 import type {UserServiceDriverPorts} from "../ports/user-service-driver.ports.ts";
+import type {UserServiceReaderDrivenPorts} from "../ports/user-service-reader-driven.ports.ts";
+import type {UserServiceWriterDrivenPorts} from "../ports/user-service-writer-driven.ports.ts";
 import { UserService } from "../user.service.ts";
 
+import { faker } from '@faker-js/faker';
 
-describe('User Service tests', () => {
+describe('User Service - FindUserByEmail port tests', () => {
 
-    const idRegex = /^0x[a-f0-9]{40}$/;
-    const userService: UserServiceDriverPorts = UserService();
+    const reader: UserServiceReaderDrivenPorts = <UserServiceReaderDrivenPorts>{
+        getUserByEmail(email: string): Promise<UserDTO | null> {
+            return Promise.resolve(null);
+        }
+    };
 
-    it('UserService should be defined', () => {
+    const writer: UserServiceWriterDrivenPorts = <UserServiceWriterDrivenPorts>{
+        saveUser(user: UserDTO): Promise<UserDTO | null> {
+            return Promise.resolve(null);
+        }
+    };
+
+    const userService: UserServiceDriverPorts = UserService(reader, writer);
+
+    test('UserService should be defined', () => {
         expect(userService).toBeDefined();
     });
 
-    describe('FindUserByEmail port tests', () => {
-        it('FindUserByEmail should be defined', () => {
-            expect(userService.findUserByEmail).toBeDefined();
-            expect(userService.findUserByEmail).toBeInstanceOf(Function);
-        });
-
-
+    test('FindUserByEmail should be defined', () => {
+        expect(userService.findUserByEmail).toBeDefined();
+        expect(userService.findUserByEmail).toBeInstanceOf(Function);
     });
+
+    test('FindUserByEmail should return null if the user is not found', async () => {
+
+        const fakeEmail = faker.internet.email();
+        const spy = vi.spyOn(userService, 'findUserByEmail');
+        const result = await userService.findUserByEmail(fakeEmail);
+
+        expect(spy).toHaveBeenCalled();
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy).toHaveBeenCalledWith(fakeEmail);
+
+        expect(result).toBeNull();
+    });
+
+
 
     /*
     describe('RegisterUser port tests', () => {
